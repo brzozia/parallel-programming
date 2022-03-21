@@ -3,14 +3,14 @@
 #include <stdlib.h>
 
 
-void proces_0(long long *loops, int msg_size, char* msg){
+void proces_0(long long *loops, int msg_size, char msg[]){
   double starttime, endtime;
   starttime = MPI_Wtime();
 
   while(*loops > 0){
     MPI_Send(&msg, msg_size, MPI_CHAR, 1, 0, MPI_COMM_WORLD);
     MPI_Recv(&msg, msg_size, MPI_CHAR, 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-    printf("Process 0 received number %s from process 1\n", msg);
+    printf("Process 0 received number %s from process 1. Size: %ld\n", msg, sizeof(msg));
 
     *loops--;
   }
@@ -19,11 +19,11 @@ void proces_0(long long *loops, int msg_size, char* msg){
   
 }
 
-void proces_1(long long *loops, int msg_size, char* msg){
+void proces_1(long long *loops, int msg_size, char msg[]){
 
   while(*loops > 0){
     MPI_Recv(&msg, msg_size, MPI_CHAR, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-    printf("Process 1 received number %s from process 0\n", msg);
+    printf("Process 1 received number %s from process 0 Size: %ld\n", msg, sizeof(msg));
     MPI_Send(&msg, msg_size, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
 
     *loops--;
@@ -57,7 +57,7 @@ int main(int argc, char** argv) {
   char msg[msg_size];
   msg[msg_size-1] = '\0';
 
-  printf("msg: %s size:", msg, sizeof(msg));
+  printf("msg: %s size: %ld", msg, sizeof(msg));
 
 
   MPI_Init(NULL, NULL);
@@ -74,10 +74,10 @@ int main(int argc, char** argv) {
 
 
   if (world_rank == 0) {
-    proces_0(&loops, msg_size, &msg);
+    proces_0(&loops, msg_size, msg);
 
   } else if (world_rank == 1) {
-    proces_1(&loops, msg_size, &msg);
+    proces_1(&loops, msg_size, msg);
   }
   MPI_Finalize();
 
