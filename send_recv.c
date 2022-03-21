@@ -12,7 +12,7 @@ void proces_0(long long *loops){
     MPI_Recv(&number, 1, MPI_INT, 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
     printf("Process 0 received number %d from process 1\n", number);
 
-    &loops -= 1;
+    *loops -= 1;
   }
   
 }
@@ -26,7 +26,7 @@ void proces_1(long long *loops){
     number = 1;
     MPI_Send(&number, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
 
-    &loops -= 1;
+    *loops -= 1;
   }
 }
 
@@ -73,4 +73,6 @@ int main(int argc, char** argv) {
     // MPI_Send(&number, 1, MPI_INT, 1, 0, MPI_COMM_WORLD);
   }
   MPI_Finalize();
+
+  return 0;
 }
