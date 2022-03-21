@@ -13,7 +13,7 @@ void proces_0(long long *loops, int msg_size, char *msg){
     MPI_Recv(msg, msg_size, MPI_CHAR, 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
     printf("Process 0 received number %s from process 1. Size: %ld\n", msg, strlen(msg));
 
-    *loops--;
+    *loops -= 1;
   }
 
   endtime   = MPI_Wtime();
@@ -27,7 +27,7 @@ void proces_1(long long *loops, int msg_size, char *msg){
     printf("Process 1 received number %s from process 0 Size: %ld\n", msg, strlen(msg));
     MPI_Send(msg, msg_size, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
 
-    *loops--;
+    *loops -=1;
   }
 }
 
@@ -52,8 +52,9 @@ int main(int argc, char** argv) {
         msg_size = 1;
     }
   }
-  char *msg = (char*)malloc(msg_size*sizeof(char));;
+  char *msg = (char*)malloc(msg_size*sizeof(char));
   msg[msg_size-1] = '\0';
+  msg[0] = 'a';
   printf("msg: %s size: %ld", msg, strlen(msg)+1);
 
 
