@@ -3,34 +3,35 @@
 #include <stdlib.h>
 
 
-void proces_0(long long *loops){
-  int number;
+void proces_0(long long *loops, int msg_size, char* msg){
+  double starttime, endtime;
+  starttime = MPI_Wtime();
 
-  while(&loops > 0){
-    number = 0;
-    MPI_Send(&number, 1, MPI_INT, 1, 0, MPI_COMM_WORLD);
-    MPI_Recv(&number, 1, MPI_INT, 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-    printf("Process 0 received number %d from process 1\n", number);
+  while(*loops > 0){
+    MPI_Send(&msg, msg_size, MPI_CHAR, 1, 0, MPI_COMM_WORLD);
+    MPI_Recv(&msg, msg_size, MPI_CHAR, 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+    printf("Process 0 received number %s from process 1\n", msg);
 
-    *loops -= 1;
+    *loops--;
   }
+
+  endtime   = MPI_Wtime();
   
 }
 
-void proces_1(long long *loops){
-  int number;
+void proces_1(long long *loops, int msg_size, char* msg){
 
-  while(&loops > 0){
-    MPI_Recv(&number, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-    printf("Process 1 received number %d from process 0\n", number);
-    number = 1;
-    MPI_Send(&number, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
+  while(*loops > 0){
+    MPI_Recv(&msg, msg_size, MPI_CHAR, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+    printf("Process 1 received number %s from process 0\n", msg);
+    MPI_Send(&msg, msg_size, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
 
-    *loops -= 1;
+    *loops--;
   }
 }
 
 // arg[1] - times of ping-pong
+// arg[2] - size of message in bytes
 int main(int argc, char** argv) {
   if(argc < 2){
     printf("You need to give an argument - how many times send-receive should be done.");
@@ -42,6 +43,22 @@ int main(int argc, char** argv) {
     printf("Send-receive argument has to be bigger than 0.");
     return 1;
   }
+
+  int msg_size = 1;
+
+  if(argc >= 2){
+    msg_size = strtoll(argv[2], NULL, 10);
+    
+    if(msg_size<1){
+        msg_size = 1;
+    }
+  }
+
+  char msg[msg_size];
+  msg[msg_size-1] = '\0';
+
+  printf("msg: %s size:", msg, sizeof(msg));
+
 
   MPI_Init(NULL, NULL);
   int world_rank;
@@ -56,21 +73,11 @@ int main(int argc, char** argv) {
   }
 
 
-  // int number;
   if (world_rank == 0) {
-    proces_0(&loops);
-    // If we are rank 0, set the number to -1 and send it to process 1
-    // number = 0;
-    // MPI_Send(&number, 1, MPI_INT, 1, 0, MPI_COMM_WORLD);
-    // MPI_Recv(&number, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-    // printf("Process 0 received number %d from process 1\n", number);
+    proces_0(&loops, msg_size, &msg);
 
   } else if (world_rank == 1) {
-    proces_1(&loops);
-    // MPI_Recv(&number, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-    // printf("Process 1 received number %d from process 0\n", number);
-    // number = 1;
-    // MPI_Send(&number, 1, MPI_INT, 1, 0, MPI_COMM_WORLD);
+    proces_1(&loops, msg_size, &msg);
   }
   MPI_Finalize();
 
