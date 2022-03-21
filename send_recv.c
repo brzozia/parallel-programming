@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <fcntl.h>
 
 
 double proces_0(long long *loops, int msg_size, char *msg){
@@ -34,6 +35,7 @@ void proces_1(long long *loops, int msg_size, char *msg){
 
 // arg[1] - times of ping-pong
 // arg[2] - size of message in bytes
+// arg[3] - results filename
 int main(int argc, char** argv) {
   if(argc < 2){
     printf("You need to give an argument - how many times send-receive should be done.");
@@ -55,7 +57,8 @@ int main(int argc, char** argv) {
   }
   char *msg = (char*)calloc(msg_size,sizeof(char));
   
-  for(int i=0;i<msg_size-1;i++){
+  int i;
+  for(i=0;i<msg_size-1;i++){
       msg[i] = 'a';
   }
   msg[msg_size-1] = '\0';
@@ -77,14 +80,24 @@ int main(int argc, char** argv) {
 
   double time;
   if (world_rank == 0) {
+
     time = proces_0(&loops, msg_size, msg);
+    printf("time: %f", time);
+
+    if(argc>2){
+      FILE *fd;
+      fd = fopen(argv[3], "a" );
+      // lseek(fd, SEEK_END);
+
+      fprintf(fd,"%d; %d; %f;\n", loops, msg_size, time);
+      fclose(fd);
+    }
 
   } else if (world_rank == 1) {
     proces_1(&loops, msg_size, msg);
   }
 
   free(msg);
-  printf("time: &f", time);
   MPI_Finalize();
 
   return 0;
