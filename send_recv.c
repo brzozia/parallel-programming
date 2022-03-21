@@ -53,9 +53,11 @@ int main(int argc, char** argv) {
     }
   }
   char *msg = (char*)malloc(msg_size*sizeof(char));
-  msg[msg_size-1] = '\0';
+  
   msg[0] = 'a';
-  printf("msg: %s size: %ld", msg, strlen(msg)+1);
+  msg[1] = 'b';
+  msg[msg_size-1] = '\0';
+  printf("msg: %s size: %ld, %d\n", msg, strlen(msg)+1, msg_size);
 
 
   MPI_Init(NULL, NULL);
