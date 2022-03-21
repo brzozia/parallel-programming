@@ -4,13 +4,13 @@
 #include <string.h>
 
 
-void proces_0(long long *loops, int msg_size, char msg[]){
+void proces_0(long long *loops, int msg_size, char *msg){
   double starttime, endtime;
   starttime = MPI_Wtime();
 
   while(*loops > 0){
-    MPI_Send(&msg, msg_size, MPI_CHAR, 1, 0, MPI_COMM_WORLD);
-    MPI_Recv(&msg, msg_size, MPI_CHAR, 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+    MPI_Send(msg, msg_size, MPI_CHAR, 1, 0, MPI_COMM_WORLD);
+    MPI_Recv(msg, msg_size, MPI_CHAR, 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
     printf("Process 0 received number %s from process 1. Size: %ld\n", msg, strlen(msg));
 
     *loops--;
@@ -20,12 +20,12 @@ void proces_0(long long *loops, int msg_size, char msg[]){
   
 }
 
-void proces_1(long long *loops, int msg_size, char msg[]){
+void proces_1(long long *loops, int msg_size, char *msg){
 
   while(*loops > 0){
-    MPI_Recv(&msg, msg_size, MPI_CHAR, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+    MPI_Recv(msg, msg_size, MPI_CHAR, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
     printf("Process 1 received number %s from process 0 Size: %ld\n", msg, strlen(msg));
-    MPI_Send(&msg, msg_size, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
+    MPI_Send(msg, msg_size, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
 
     *loops--;
   }
@@ -46,19 +46,15 @@ int main(int argc, char** argv) {
   }
 
   int msg_size = 1;
-
   if(argc >= 2){
     msg_size = strtoll(argv[2], NULL, 10);
-    
     if(msg_size<1){
         msg_size = 1;
     }
   }
-
-  char msg[msg_size] = {'a'};
+  char *msg = (char*)malloc(msg_size*sizeof(char));;
   msg[msg_size-1] = '\0';
-
-  printf("msg: %s size: %ld", msg, sizeof(msg));
+  printf("msg: %s size: %ld", msg, strlen(msg)+1);
 
 
   MPI_Init(NULL, NULL);
@@ -80,6 +76,8 @@ int main(int argc, char** argv) {
   } else if (world_rank == 1) {
     proces_1(&loops, msg_size, msg);
   }
+
+  free(msg);
   MPI_Finalize();
 
   return 0;
