@@ -84,14 +84,14 @@ int main(int argc, char** argv) {
     msg[msg_size-1] = '\0';
 
     time = proces_0(loops, msg_size, msg);
-    printf("time: %f", time);
+    // printf("time: %f", time);
 
     if(argc>2){
       FILE *fd;
       fd = fopen(argv[3], "a" );
       // lseek(fd, SEEK_END);
 
-      fprintf(fd,"%ld; %d; %f;\n", loops, msg_size, time);
+      fprintf(fd,"%lld; %d; %f;\n", loops, msg_size, time);
       fclose(fd);
     }
 
