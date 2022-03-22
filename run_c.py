@@ -8,10 +8,10 @@ result_file = "./results_1_2n.txt"
 compile_c = "mpicc -o send_rec send_recv.c"
 run_c = "mpiexec -machinefile ./allnodes -np 2 ./send_rec "
 
-subprocess.Popen(compile_c)
+subprocess.Popen(compile_c.split(" "))
 for size in msg_size:
     for loop in loops:
-        proces = subprocess.Popen(run_c + str(loop) + " " + str(size) + " " + str(result_file))
+        proces = subprocess.Popen((run_c + str(loop) + " " + str(size) + " " + str(result_file)).split(" "))
         proces.wait()
 	print(proces.stdout)
 
