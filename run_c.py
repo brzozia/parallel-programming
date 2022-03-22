@@ -1,6 +1,6 @@
 import os
 
-loops = [1000, 10**4, 10**5, 10**6, 10**7, 10**8, 10**9, 10**10, 10**11]
+loops = [x for x in range(1000, 10**4, 1000) ]
 msg_size = [x for x in range(1, 3000, 100)]
 result_file = "./results_1.txt"
 
