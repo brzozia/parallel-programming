@@ -13,6 +13,11 @@ void proces_0(int msg_size, char *msg){
 
 // arg[1] - times of ping-pong
 int main(int argc, char** argv) {
+    printf(argv[1]);
+   if(*argv[1] == 'b'){
+       printf("aha");
+   }
+  
   int msg_size = 6;
    char *msg=(char*)calloc(msg_size,sizeof(char));
 //   char *msg = (char*)calloc(msg_size,sizeof(char));

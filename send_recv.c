@@ -54,13 +54,16 @@ double proces_0B(long long loops, int msg_size, char *msg){
   }
   endtime = MPI_Wtime();
 
-  MPI_Buffer_detach(&buf, &bufsize);
+  MPI_Buffer_detach(&buf, &size);
   free(buf);
   return endtime - starttime;
   
 }
 
 void proces_1B(long long loops, int msg_size, char *msg){
+  int size = BUF_SIZE*sizeof(char)+MPI_BSEND_OVERHEAD;
+  char *buf = (char*)malloc(size);
+  MPI_Buffer_attach( buf, size);
 
   MPI_Barrier(MPI_COMM_WORLD);
   while(loops > 0){
@@ -69,6 +72,8 @@ void proces_1B(long long loops, int msg_size, char *msg){
     MPI_Bsend(msg, msg_size, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
 
     loops--;
+    MPI_Buffer_detach(&buf, &size);
+    free(buf);
   }
 }
 
@@ -120,7 +125,7 @@ int main(int argc, char** argv) {
     }
     msg[msg_size-1] = '\0';
 
-    if(argc>3 && argv[4]=='b'){
+    if(argc>3 && *argv[4]=='b'){
       time = proces_0B(loops, msg_size, msg);
     }
     else{
@@ -139,7 +144,7 @@ int main(int argc, char** argv) {
     }
 
   } else if (world_rank == 1) {
-    if(argc>3 && argv[4]=='b'){
+    if(argc>3 && *argv[4]=='b'){
       proces_1B(loops, msg_size, msg);
     }
     else{
