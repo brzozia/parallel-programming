@@ -52,9 +52,10 @@ double proces_0B(long long loops, int msg_size, char *msg){
 
     loops--;
   }
+  MPI_Buffer_detach(&buf, &size);
   endtime = MPI_Wtime();
 
-  MPI_Buffer_detach(&buf, &size);
+  
   free(buf);
   return endtime - starttime;
   
@@ -72,9 +73,9 @@ void proces_1B(long long loops, int msg_size, char *msg){
     MPI_Bsend(msg, msg_size, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
 
     loops--;
+  }
     MPI_Buffer_detach(&buf, &size);
     free(buf);
-  }
 }
 
 // arg[1] - times of ping-pong
