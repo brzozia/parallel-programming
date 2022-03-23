@@ -48,7 +48,7 @@ double proces_0B(long long loops, int msg_size, char *msg){
   while(loops > 0){
     MPI_Bsend(msg, msg_size, MPI_CHAR, 1, 0, MPI_COMM_WORLD);
     MPI_Recv(msg, msg_size, MPI_CHAR, 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-    printf("Process 0 received number %s from process 1. Size: %ld\n", msg, strlen(msg)+1); // +1 for '\0' sign
+//    printf("Process 0 received number %s from process 1. Size: %ld\n", msg, strlen(msg)+1); // +1 for '\0' sign
 
     loops--;
   }
@@ -69,7 +69,7 @@ void proces_1B(long long loops, int msg_size, char *msg){
   MPI_Barrier(MPI_COMM_WORLD);
   while(loops > 0){
     MPI_Recv(msg, msg_size, MPI_CHAR, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-    printf("Process 1 received number %s from process 0 Size: %ld\n", msg, strlen(msg)+1);// +1 for '\0' sign
+  //  printf("Process 1 received number %s from process 0 Size: %ld\n", msg, strlen(msg)+1);// +1 for '\0' sign
     MPI_Bsend(msg, msg_size, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
 
     loops--;
