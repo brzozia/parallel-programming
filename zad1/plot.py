@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-df = pd.read_csv('results_1.txt', ";")
+df = pd.read_csv('results_1_1.txt', ";")
 df.columns = ['loops', 'msg_size', 'time', 'nan']
 
 # powt_10000 = [x for x in df if df['loops']==10000]
@@ -13,8 +13,7 @@ def throughput(loops):
     size = []
     for index, row in loops_1e4.iterrows():
         size.append(row['msg_size'])
-        print(2*loops*row['msg_size']/(row['time']))
-        thr.append(2*loops*row['msg_size']/(row['time']*1024*1024))
+        thr.append((2*loops*row['msg_size']*8)/(row['time']*1024*1024))
     print(thr)
 
     fig = go.Figure()
@@ -31,7 +30,7 @@ def throughput(loops):
         )
     ))
     fig.update_layout(
-        title="Przepustowość (dla "+str(loops) +" powtórzeń komunikacji",
+        title="Przepustowość (dla "+str(loops) +" powtórzeń komunikacji)",
         xaxis_title="rozmiar wiadomości [B]",
         yaxis_title="przepustowość"
     )
@@ -39,7 +38,7 @@ def throughput(loops):
     fig.show()
 
 
-throughput(100000)
+throughput(5000)
 # fig = go.Figure()
 # fig.add_trace(go.Scatter(
 #     x=buy_trades_time,
