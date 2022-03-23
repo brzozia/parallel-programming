@@ -6,10 +6,9 @@
 #define RADIUS 1
 
 
-int calc_points(int my_points){
+long long calc_points(int my_points){
     long long inside_wheel = 0;
 
-    srand(time(NULL)); //różny srand dla każdego procesu
     long long i;
     for(i=0; i<my_points; i++){
         double x = (double) rand() / RAND_MAX;
@@ -32,12 +31,13 @@ int main(int argc,char **argv){
         return 1;
     }
 
-    // pomiar czasu czesc sekwencyjna
     MPI_Init(NULL, NULL);
     int world_rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &world_rank); /* get current process id */
     int world_size;
     MPI_Comm_size(MPI_COMM_WORLD, &world_size); /* get number of processes */
+    
+    srand(time(0) + world_rank + 2); //różny srand dla każdego procesu !!!!!!!!!!!!!
 
     long long points_no = strtol(argv[1], NULL, 10); 
     long long my_points = points_no / world_size;
@@ -50,7 +50,7 @@ int main(int argc,char **argv){
     MPI_Barrier(MPI_COMM_WORLD);
     
     starttime = MPI_Wtime(); // start
-    inside_wheel = calc_points(my_points);
+    inside_wheel = calc_points(my_points, );
     paraltime = MPI_Wtime(); // cz rownolegla
 
     printf("%lld %lld\n", my_points, inside_wheel);
@@ -58,7 +58,7 @@ int main(int argc,char **argv){
 
     
     if(world_rank==0){
-        pi = ((double) inside_wheel / points_no )*4.0;
+        pi = ((double) inside_wheel_all / points_no )*4.0;
 
         calctime = MPI_Wtime(); // cz sekwencyjna
         
