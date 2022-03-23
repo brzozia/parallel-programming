@@ -10,7 +10,8 @@ int calc_points(int my_points){
     long long inside_wheel = 0;
 
     srand(time(NULL)); //różny srand dla każdego procesu
-    for(long long i=0; i<my_points; i++){
+    long long i;
+    for(i=0; i<my_points; i++){
         double x = (double) rand() / RAND_MAX;
         double y = (double) rand() / RAND_MAX;
 
@@ -41,7 +42,7 @@ int main(int argc,char **argv){
     long long points_no = strtol(argv[1], NULL, 10); 
     long long my_points = points_no / world_size;
     if(world_rank==0){
-        my_points += points_no - (my_points*world_size)
+        my_points += points_no - (my_points*world_size);
     }
 
     double starttime, paraltime, calctime, pi;
@@ -71,4 +72,5 @@ int main(int argc,char **argv){
         }
     }
    
+   return 0;
 }
