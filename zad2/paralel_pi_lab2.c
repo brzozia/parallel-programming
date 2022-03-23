@@ -66,7 +66,7 @@ int main(int argc,char **argv){
         if(argc>2){
             FILE *fd;
             fd = fopen(argv[2], "a" );
-            fprintf(fd,"%lld; %d; %f;\n", world_size, points_no, inside_wheel, starttime, paraltime, calctime);
+            fprintf(fd,"%d;%lld;%lld;%lld;%lf;%lf;%lf;%lf;\n", world_size, points_no, my_points, inside_wheel, starttime, paraltime, calctime, pi);
             fclose(fd);
         }
     }
