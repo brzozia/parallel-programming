@@ -1,7 +1,7 @@
 import subprocess
 
 
-loops = [10000]
+loops = [10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000]
 # x for x in range(1000, 10**4, 1000)
 msg_size = [x for x in range(1, 3000, 100)]
 result_file = "./results_fin1_89.txt"
