@@ -1,44 +1,50 @@
+from random import randint
 import matplotlib as plt
 import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-df = pd.read_csv('results_1_1.txt', ";")
-df.columns = ['loops', 'msg_size', 'time', 'nan']
+df1 = pd.read_csv('results_1_1.txt', ";")
+df2 = pd.read_csv('results_1_2n.txt', ";")
+df1.columns = ['loops', 'msg_size', 'time', 'nan']
+df2.columns = ['loops', 'msg_size', 'time', 'nan']
 
 # powt_10000 = [x for x in df if df['loops']==10000]
-def throughput(loops):
+def throughput(loops, df, fig, pl_name):
     loops_1e4= df.loc[df['loops'] == loops]
+    print(loops_1e4)
     thr = []
     size = []
     for index, row in loops_1e4.iterrows():
         size.append(row['msg_size'])
-        thr.append((2*loops*row['msg_size']*8)/(row['time']*1024*1024))
-    print(thr)
+        thr.append((2*loops*row['msg_size']*8)/row['time']/1024/1024)
 
-    fig = go.Figure()
+
     fig.add_trace(go.Scatter(
         x=size,
         y=thr,
         mode='markers',
-        name='Przepustowość',
+        name=pl_name,
         marker_symbol='diamond',
         marker=dict(
-            color='blue',
+            color=randint(1, 500),
             line_width=2,
             size=7,
-        )
+            
+        ),
     ))
     fig.update_layout(
-        title="Przepustowość (dla "+str(loops) +" powtórzeń komunikacji)",
+        title="Przepustowość (dla "+str(loops) +" powtórzeń)",
         xaxis_title="rozmiar wiadomości [B]",
-        yaxis_title="przepustowość"
+        yaxis_title="przepustowość [Mbits/s]"
     )
 
-    fig.show()
+  
 
-
-throughput(5000)
+fig = go.Figure()
+throughput(3000, df1, fig, "ssend 1node")
+throughput(3000, df2, fig, "bsend? 2nodes")
+fig.show()
 # fig = go.Figure()
 # fig.add_trace(go.Scatter(
 #     x=buy_trades_time,
