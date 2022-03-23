@@ -53,10 +53,10 @@ int main(int argc,char **argv){
     inside_wheel = calc_points(my_points);
     paraltime = MPI_Wtime(); // cz rownolegla
 
-    
+    printf("%lld %lld\n", my_points, inside_wheel);
     MPI_Reduce( &inside_wheel, &inside_wheel_all, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD );
 
-    printf("%lld %lld\n", my_points, inside_wheel);
+    
     if(world_rank==0){
         pi = ((double) inside_wheel / points_no )*4.0;
 
