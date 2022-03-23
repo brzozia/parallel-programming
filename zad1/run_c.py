@@ -1,13 +1,13 @@
 import subprocess
 
 
-loops = [10000]
+loops = [10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000]
 # x for x in range(1000, 10**4, 1000)
-msg_size = [x for x in range(1, 30000, 1000)]
-result_file = "./results_fin1_89.txt"
+msg_size = [1]
+result_file = "./results_fin1.txt"
 
 compile_c = "mpicc -o send_rec send_recv.c"
-run_c = "mpiexec -machinefile ./allnodes2 -np 2 ./send_rec "
+run_c = "mpiexec -machinefile ./allnodes1 -np 2 ./send_rec "
 
 subprocess.Popen(compile_c.split(" "))
 # for ai in range(1,3):
