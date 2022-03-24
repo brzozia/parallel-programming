@@ -37,7 +37,7 @@ int main(int argc,char **argv){
     int world_size;
     MPI_Comm_size(MPI_COMM_WORLD, &world_size); /* get number of processes */
     
-    srand(time(0) + world_rank + 2); //różny srand dla każdego procesu !!!!!!!!!!!!!
+    srand(time(0) +2*world_rank + 2); //różny srand dla każdego procesu !!!!!!!!!!!!!
 
     long long points_no = strtol(argv[1], NULL, 10); 
     long long my_points = points_no / world_size;
