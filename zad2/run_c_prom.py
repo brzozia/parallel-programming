@@ -1,10 +1,9 @@
 import subprocess
 
-points = []
-for i in range(10, 11): #how long it takes
-    points.append(10**i)
+points = [10**10, 10**20, 10*30]
 
-repets = 10
+
+repets = 20
 procesors = [x for x in range(1, 13, 1)]
 result_file = "./results_2_vcl_v1.txt"
 
