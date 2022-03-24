@@ -1,12 +1,12 @@
 import subprocess
 
-points = [10**10]
+points = [10**8]
 # for i in range(10, 11): #how long it takes
 #     points.append(10**i)
 
 # repets = 10
 procesors = [x for x in range(1, 13, 1)]
-result_file = "./results_2_vcl_v3.txt"
+result_file = "./results_2_vcl_v5.txt"
 
 compile_c = "mpicc -o pi paralel_pi_lab2.c"
 # run_c = "mpiexec -machinefile ./allnodes -np " + str(proc) + " ./pi "
