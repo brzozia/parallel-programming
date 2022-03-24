@@ -13,6 +13,6 @@ for points_no in 4000000 300000000 5000000000
 do
     for proc in {1..12}
     do
-        mpiexec -np  $proc ./pi  $points_no  results_promet_v13.txt
+        mpiexec -np  $proc ./pi  $points_no  results_promet_v19.txt
     done
 done
