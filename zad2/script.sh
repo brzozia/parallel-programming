@@ -9,7 +9,10 @@ module add plgrid/tools/openmpi
 
 mpicc -o pi paralel_pi_lab2.c
 
-for i in 4e6 1e8 :
-    for points_no in points:
-        for proc in procesors:
-            run_c = "mpiexec -np " + str(proc) + " ./pi " + i + " " + str(result_file)
+for points_no in 4e6 3e8 5e10
+do
+    for proc in {1..12}
+    do
+        mpiexec -np  $proc ./pi  $points_no  results_promet_v1.txt
+    done
+done

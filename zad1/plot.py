@@ -4,10 +4,10 @@ import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-df1 = pd.read_csv('results_fin1a_v3.txt', ";")
-df2 = pd.read_csv('results_fin2a_v2.txt', ";")
-df3 = pd.read_csv('results_fin1b_v1.txt', ";")
-df4 = pd.read_csv('results_fin2b_v3.txt', ";")
+df1 = pd.read_csv('results_v03_send.txt', ";")
+df2 = pd.read_csv('results_v08_v09_send.txt', ";")
+df3 = pd.read_csv('results_v03_bsend.txt', ";")
+df4 = pd.read_csv('results_v08_v09_bsend.txt', ";")
 df1.columns = ['loops', 'msg_size', 'time', 'nan']
 df2.columns = ['loops', 'msg_size', 'time', 'nan']
 df3.columns = ['loops', 'msg_size', 'time', 'nan']
@@ -63,5 +63,5 @@ latency(df1, "Opóźnienie dla MPI_Send, vnode-03: ")
 latency(df3, "Opóźnienie dla MPI_Bsend, vnode-03: ")
 latency(df2, "Opóźnienie dla MPI_Send, vnode-08, vnode-09: ")
 latency(df4, "Opóźnienie dla MPI_Bsend, vnode-08, vnode-09: ")
-# fig.show()
-# fig2.show()
+fig.show()
+fig2.show()
