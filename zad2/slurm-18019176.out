@@ -1,0 +1,364 @@
+ plgrid/apps/cuda/11.2 loaded.
+ plgrid/libs/gdrcopy/2.2-cuda-11.2 loaded.
+ plgrid/libs/ucx/1.10.0-cuda-11.2 loaded.
+ plgrid/tools/binutils/2.34 loaded.
+ plgrid/tools/gcc/9.3.0 loaded.
+ plgrid/tools/nvhpc/22.3 loaded.
+ plgrid/tools/openmpi/4.1.2-nvhpc-22.3 loaded.
+--------------------------------------------------------------------------
+mpiexec was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./pi
+Node: p1395
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+mpiexec was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./pi
+Node: p1395
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+2 total processes failed to start
+--------------------------------------------------------------------------
+mpiexec was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./pi
+Node: p1395
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+3 total processes failed to start
+--------------------------------------------------------------------------
+mpiexec was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./pi
+Node: p1395
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+4 total processes failed to start
+--------------------------------------------------------------------------
+mpiexec was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./pi
+Node: p1395
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+5 total processes failed to start
+--------------------------------------------------------------------------
+mpiexec was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./pi
+Node: p1395
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+6 total processes failed to start
+--------------------------------------------------------------------------
+mpiexec was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./pi
+Node: p1395
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+7 total processes failed to start
+--------------------------------------------------------------------------
+mpiexec was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./pi
+Node: p1395
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+8 total processes failed to start
+--------------------------------------------------------------------------
+mpiexec was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./pi
+Node: p1395
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+9 total processes failed to start
+--------------------------------------------------------------------------
+mpiexec was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./pi
+Node: p1395
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+10 total processes failed to start
+--------------------------------------------------------------------------
+mpiexec was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./pi
+Node: p1395
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+11 total processes failed to start
+--------------------------------------------------------------------------
+mpiexec was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./pi
+Node: p1395
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+12 total processes failed to start
+--------------------------------------------------------------------------
+mpiexec was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./pi
+Node: p1395
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+mpiexec was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./pi
+Node: p1395
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+2 total processes failed to start
+--------------------------------------------------------------------------
+mpiexec was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./pi
+Node: p1395
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+3 total processes failed to start
+--------------------------------------------------------------------------
+mpiexec was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./pi
+Node: p1395
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+4 total processes failed to start
+--------------------------------------------------------------------------
+mpiexec was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./pi
+Node: p1395
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+5 total processes failed to start
+--------------------------------------------------------------------------
+mpiexec was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./pi
+Node: p1395
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+6 total processes failed to start
+--------------------------------------------------------------------------
+mpiexec was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./pi
+Node: p1395
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+7 total processes failed to start
+--------------------------------------------------------------------------
+mpiexec was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./pi
+Node: p1395
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+8 total processes failed to start
+--------------------------------------------------------------------------
+mpiexec was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./pi
+Node: p1395
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+9 total processes failed to start
+--------------------------------------------------------------------------
+mpiexec was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./pi
+Node: p1395
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+10 total processes failed to start
+--------------------------------------------------------------------------
+mpiexec was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./pi
+Node: p1395
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+11 total processes failed to start
+--------------------------------------------------------------------------
+mpiexec was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./pi
+Node: p1395
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+12 total processes failed to start
+--------------------------------------------------------------------------
+mpiexec was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./pi
+Node: p1395
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+mpiexec was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./pi
+Node: p1395
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+2 total processes failed to start
+--------------------------------------------------------------------------
+mpiexec was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./pi
+Node: p1395
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+3 total processes failed to start
+--------------------------------------------------------------------------
+mpiexec was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./pi
+Node: p1395
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+4 total processes failed to start
+--------------------------------------------------------------------------
+mpiexec was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./pi
+Node: p1395
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+5 total processes failed to start
+--------------------------------------------------------------------------
+mpiexec was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./pi
+Node: p1395
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+6 total processes failed to start
+--------------------------------------------------------------------------
+mpiexec was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./pi
+Node: p1395
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+7 total processes failed to start
+--------------------------------------------------------------------------
+mpiexec was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./pi
+Node: p1395
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+8 total processes failed to start
+--------------------------------------------------------------------------
+mpiexec was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./pi
+Node: p1395
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+9 total processes failed to start
+--------------------------------------------------------------------------
+mpiexec was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./pi
+Node: p1395
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+10 total processes failed to start
+--------------------------------------------------------------------------
+mpiexec was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./pi
+Node: p1395
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+11 total processes failed to start
+--------------------------------------------------------------------------
+mpiexec was unable to launch the specified application as it could not access
+or execute an executable:
+
+Executable: ./pi
+Node: p1395
+
+while attempting to start process rank 0.
+--------------------------------------------------------------------------
+12 total processes failed to start
