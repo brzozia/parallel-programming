@@ -9,7 +9,8 @@ result_file = "./results_fin2a_v5.txt"
 compile_c = "mpicc -o send_rec send_recv.c"
 run_c = "mpiexec -machinefile ./allnodes2 -np 2 ./send_rec "
 
-subprocess.Popen(compile_c.split(" "))
+proces = subprocess.Popen(compile_c.split(" "))
+proces.wait()
 # for ai in range(1,3):
 for loop in loops:
     for size in msg_size:
