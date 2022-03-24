@@ -50,10 +50,10 @@ int main(int argc,char **argv){
     MPI_Barrier(MPI_COMM_WORLD);
     
     starttime = MPI_Wtime(); // start
-    inside_wheel = calc_points(my_points, );
+    inside_wheel = calc_points(my_points);
     paraltime = MPI_Wtime(); // cz rownolegla
 
-    printf("%lld %lld\n", my_points, inside_wheel);
+    // printf("%lld %lld\n", my_points, inside_wheel);
     MPI_Reduce( &inside_wheel, &inside_wheel_all, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD );
 
     
@@ -62,8 +62,7 @@ int main(int argc,char **argv){
 
         calctime = MPI_Wtime(); // cz sekwencyjna
         
-        
-        printf("Calculated pi is: %f", pi);
+        // printf("Calculated pi is: %f", pi);
         if(argc>2){
             FILE *fd;
             fd = fopen(argv[2], "a" );
