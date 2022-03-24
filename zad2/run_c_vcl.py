@@ -6,7 +6,7 @@ for i in range(10, 11): #how long it takes
 
 repets = 10
 procesors = [x for x in range(1, 13, 1)]
-result_file = "./results_2_vcl_test.txt"
+result_file = "./results_2_vcl_v1.txt"
 
 compile_c = "mpicc -o pi paralel_pi_lab2.c"
 # run_c = "mpiexec -machinefile ./allnodes -np " + str(proc) + " ./pi "
