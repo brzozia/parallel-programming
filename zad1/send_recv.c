@@ -128,7 +128,6 @@ int main(int argc, char** argv) {
 
     if(argc>3 && *argv[4]=='b'){
       time = proces_0B(loops, msg_size, msg);
-	printf("halo?");
     }
     else{
       time = proces_0(loops, msg_size, msg);

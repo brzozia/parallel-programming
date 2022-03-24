@@ -4,13 +4,14 @@ import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-df1 = pd.read_csv('results_1_1.txt', ";")
-df2 = pd.read_csv('results_1_2n.txt', ";")
+df1 = pd.read_csv('results_fin1a_v3.txt', ";")
+df2 = pd.read_csv('results_fin2a_v2.txt', ";")
 df1.columns = ['loops', 'msg_size', 'time', 'nan']
 df2.columns = ['loops', 'msg_size', 'time', 'nan']
 
-# powt_10000 = [x for x in df if df['loops']==10000]
-def throughput(loops, df, fig, pl_name):
+# do 3 są ok (4 jest czasem za krótkie)
+# 5 dla większych wiadomości
+def throughput(loops, df, fig, pl_name, gen_name):
     loops_1e4= df.loc[df['loops'] == loops]
     print(loops_1e4)
     thr = []
@@ -34,51 +35,26 @@ def throughput(loops, df, fig, pl_name):
         ),
     ))
     fig.update_layout(
-        title="Przepustowość (dla "+str(loops) +" powtórzeń)",
-        xaxis_title="rozmiar wiadomości [B]",
-        yaxis_title="przepustowość [Mbits/s]"
+        title=gen_name,
+        xaxis_title="Rozmiar wiadomości [B]",
+        yaxis_title="Przepustowość [Mbits/s]"
     )
 
-  
+def latency(df, msg):
+    size_1 = df.loc[df['msg_size']==1]
+    sum_time = size_1['time'].sum().sum()
+    print(sum_time)
+    sum_loops = size_1['loops'].sum().sum()
+    print(sum_loops)
+
+    lat = sum_time/sum_loops
+    print("Opóźnienie: " + str(lat))
+
+
 
 fig = go.Figure()
-throughput(3000, df1, fig, "ssend 1node")
-throughput(3000, df2, fig, "bsend? 2nodes")
+# throughput(10000, df1, fig, "MPI_Send", "Przepustowość - vnode-03, 10000 powtórzeń")
+# throughput(10000, df2, fig, "MPI_Send", "Przepustowość - vnode-08, vnode-09, 10000 powtórzeń")
+latency(df1, "Opóźnienie dla MPI_Send, vnode-03: ")
+latency(df2, "Opóźnienie dla MPI_Send, vnode-08, vnode-09: ")
 fig.show()
-# fig = go.Figure()
-# fig.add_trace(go.Scatter(
-#     x=buy_trades_time,
-#     y=buy_trades_price,
-#     mode='markers',
-#     name='buy trades',
-#     marker_symbol='diamond',
-#     marker=dict(
-#         color='blue',
-#         line_width=2,
-#         size=7,
-
-#     )
-# ))
-
-# fig.add_trace(go.Scatter(
-#     x=sell_trades_time,
-#     y=sell_trades_price,
-#     mode='markers',
-#     name='sell trades',
-#     marker_symbol='square',
-#     marker=dict(
-#         color='yellow',
-#         line_width=2,
-#         size=7
-#     )
-# ))
-
-# fig.update_layout(
-#     title="Candles",
-#     xaxis_title="time",
-#     yaxis_title="price",
-#     width=width,
-#     height=height
-# )
-
-# fig.show()
