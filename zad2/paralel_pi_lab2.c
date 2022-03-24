@@ -6,10 +6,10 @@
 #define RADIUS 1
 
 
-long long calc_points(int my_points){
-    long long inside_wheel = 0;
+unsigned long long calc_points(unsigned long long my_points){
+    unsigned long long inside_wheel = 0;
 
-    long long i;
+    unsigned long long i;
     for(i=0; i<my_points; i++){
         double x = (double) rand() / RAND_MAX;
         double y = (double) rand() / RAND_MAX;
@@ -39,14 +39,14 @@ int main(int argc,char **argv){
     
     srand(time(0) +2*world_rank + 2); //różny srand dla każdego procesu !!!!!!!!!!!!!
 
-    long long points_no = strtol(argv[1], NULL, 10); 
-    long long my_points = points_no / world_size;
+    unsigned long long points_no = strtol(argv[1], NULL, 10); 
+    unsigned long long my_points = points_no / world_size;
     if(world_rank==0){
         my_points += points_no - (my_points*world_size);
     }
 
     double starttime, paraltime, calctime, pi;
-    long long inside_wheel_all, inside_wheel;
+    unsigned long long inside_wheel, inside_wheel_all = 0;
     MPI_Barrier(MPI_COMM_WORLD);
     
     starttime = MPI_Wtime(); // start
@@ -54,7 +54,7 @@ int main(int argc,char **argv){
     paraltime = MPI_Wtime(); // cz rownolegla
 
     // printf("%lld %lld\n", my_points, inside_wheel);
-    MPI_Reduce( &inside_wheel, &inside_wheel_all, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD );
+    MPI_Reduce( &inside_wheel, &inside_wheel_all, 1, MPI_UNSIGNED_LONG_LONG, MPI_SUM, 0, MPI_COMM_WORLD );
 
     
     if(world_rank==0){
