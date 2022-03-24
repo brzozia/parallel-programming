@@ -12,7 +12,7 @@ df1.columns = ['loops', 'msg_size', 'time', 'nan']
 df2.columns = ['loops', 'msg_size', 'time', 'nan']
 df3.columns = ['loops', 'msg_size', 'time', 'nan']
 df4.columns = ['loops', 'msg_size', 'time', 'nan']
-
+print(df4)
 # do 3 są ok (4 jest czasem za krótkie)
 # 5 dla większych wiadomości
 def throughput(loops, df, fig, pl_name, gen_name):
@@ -63,5 +63,5 @@ latency(df1, "Opóźnienie dla MPI_Send, vnode-03: ")
 latency(df3, "Opóźnienie dla MPI_Bsend, vnode-03: ")
 latency(df2, "Opóźnienie dla MPI_Send, vnode-08, vnode-09: ")
 latency(df4, "Opóźnienie dla MPI_Bsend, vnode-08, vnode-09: ")
-# fig.show()
-# fig2.show()
+fig.show()
+fig2.show()
