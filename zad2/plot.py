@@ -4,13 +4,14 @@ import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-df1 = pd.read_csv('results_promet_v2.txt', ";")
-df2 = pd.read_csv('results_promet_v3.txt', ";")
-df3 = pd.read_csv('results_promet_v4.txt', ";")
-df4 = pd.read_csv('results_promet_v5.txt', ";")
-df5 = pd.read_csv('results_promet_v6.txt', ";")
-df6 = pd.read_csv('results_promet_v7.txt', ";")
-df7 = pd.read_csv('results_promet_v8.txt', ";")
+df1 = pd.read_csv('results_promet_v19.txt', ";")
+df2 = pd.read_csv('results_promet_v20.txt', ";")
+df3 = pd.read_csv('results_promet_v14.txt', ";")
+df4 = pd.read_csv('results_promet_v15.txt', ";")
+df5 = pd.read_csv('results_promet_v16.txt', ";")
+df6 = pd.read_csv('results_promet_v17.txt', ";")
+df7 = pd.read_csv('results_promet_v18.txt', ";")
+
 df8 = pd.read_csv('results_promet_v9.txt', ";")
 df9 = pd.read_csv('results_promet_v10.txt', ";")
 df10 = pd.read_csv('results_promet_v11.txt', ";")
@@ -47,16 +48,22 @@ def time(fig):
     y1 = []
     y2 = []
     y3 = []
+    y1std = []
+    y2std = []
+    y3std = []
     for key,d in all_df.items():
         x1.append(key)
 
         t1 = [x['end'] - x['start'] for i, x in d.iterrows() if x['all_points']==4000000]
         t2 = [x['end'] - x['start'] for i, x in d.iterrows() if x['all_points']==300000000]
-        t3 = [x['end'] - x['start'] for i, x in d.iterrows() if x['all_points']==50000000000]
+        t3 = [x['end'] - x['start'] for i, x in d.iterrows() if x['all_points']==5000000000]
 
         y1.append(sum(t1)/len(t1))
+        y1std.append((sum([((x - sum(t1)/len(t1)) ** 2) for x in t1]) / len(t1)) ** 0.5)
         y2.append(sum(t2)/len(t2))
+        y2std.append((sum([((x - sum(t2)/len(t2)) ** 2) for x in t2]) / len(t2)) ** 0.5)
         y3.append(sum(t3)/len(t3))   #albo inaczej + odchylenie
+        y3std.append((sum([((x - sum(t3)/len(t3)) ** 2) for x in t3]) / len(t3)) ** 0.5)
 
     
     fig.add_trace(go.Scatter(
@@ -87,7 +94,44 @@ def time(fig):
         x=x1,
         y=y3,
         mode='markers',
-        name="5*10^10",
+        name="5*10^9",
+        marker_symbol='diamond',
+        marker=dict(
+            color=randint(1, 500),
+            line_width=2,
+            size=7,
+        ),
+    ))
+
+    fig.add_trace(go.Scatter(
+        x=x1,
+        y=y1,
+        mode='markers',
+        name="odchylenie standardowe 4*10^6",
+        marker_symbol='diamond',
+        marker=dict(
+            color=randint(1, 500),
+            line_width=2,
+            size=7,
+        ),
+    ))
+    fig.add_trace(go.Scatter(
+        x=x1,
+        y=y2,
+        mode='markers',
+        name="odchylenie standardowe 3*10^8",
+        marker_symbol='diamond',
+        marker=dict(
+            color=randint(1, 500),
+            line_width=2,
+            size=7,
+        ),
+    ))
+    fig.add_trace(go.Scatter(
+        x=x1,
+        y=y3,
+        mode='markers',
+        name="odchylenie standardowe 5*10^9",
         marker_symbol='diamond',
         marker=dict(
             color=randint(1, 500),
@@ -168,18 +212,19 @@ def sekw(fig):
 
         t1 = [x['end'] - x['start'] for i, x in d.iterrows() if x['all_points']==4000000]
         t2 = [x['end'] - x['start'] for i, x in d.iterrows() if x['all_points']==300000000]
-        t3 = [x['end'] - x['start'] for i, x in d.iterrows() if x['all_points']==50000000000]
+        t3 = [x['end'] - x['start'] for i, x in d.iterrows() if x['all_points']==5000000000]
+
 
         
 
         if(tp1==-1):
-            tp1 =sum(t1)/len(t1)
+            tp1 = sum(t1)/len(t1)
             tp2 = sum(t2)/len(t2)
             tp3 = sum(t3)/len(t3)
-    
-        y1.append(tp1/(sum(t1)/len(t1)))
-        y2.append(tp2/(sum(t2)/len(t2)))
-        y3.append(tp3/(sum(t3)/len(t3))) #albo inaczej + odchylenie
+        else:
+            y1.append(tp1/(sum(t1)/len(t1)))
+            y2.append(tp2/(sum(t2)/len(t2)))
+            y3.append(tp3/(sum(t3)/len(t3))) 
 
     
     fig.add_trace(go.Scatter(
