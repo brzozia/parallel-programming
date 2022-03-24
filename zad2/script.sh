@@ -9,7 +9,7 @@ module add plgrid/tools/openmpi
 
 mpicc -o pi paralel_pi_lab2.c
 
-for points_no in 4e6 3e8 5e10
+for points_no in 4000000 300000000 50000000000
 do
     for proc in {1..12}
     do
