@@ -17,9 +17,9 @@ int main(int argc, char ** argv){
     #pragma omp parallel shared(numbers, size) private(i, pid)
     {
         pid = omp_get_thread_num();
-        printf("my pid: %d", pid);
-        i =0;
+        i = 0;
        for(i=pid; i<size; i+=4){
+           printf("my pid: %d", pid);
            numbers[i] = pid;
        }
     }
@@ -28,7 +28,7 @@ int main(int argc, char ** argv){
     printf("time: %f \n", end-start);
     int j;
     for(j=0;j<size;j++){
-        printf("%d ", numbers[i]);
+        printf("%d ", numbers[j]);
     }
     free(numbers);
 }
