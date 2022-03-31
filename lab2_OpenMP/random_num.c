@@ -11,10 +11,10 @@ int main(int argc, char ** argv){
     // }
 
     int *numbers = (int*)malloc(size*sizeof(int));
-
-    double start = omp_get_wtime();
     int i, pid, thr;
     thr = omp_get_num_threads();
+    
+    double start = omp_get_wtime();
     #pragma omp parallel shared(numbers, size, thr) private(i, pid)
     {
         pid = omp_get_thread_num();
