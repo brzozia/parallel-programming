@@ -13,18 +13,21 @@ int main(int argc, char ** argv){
     int *numbers = (int*)malloc(size*sizeof(int));
 
     double start = omp_get_wtime();
-    #pragma omp parallel shared(numbers)
+    int i, pid;
+    #pragma omp parallel shared(numbers, size) private(i, pid)
     {
-        int pid = omp_get_thread_num();
-        int i =0;
+        pid = omp_get_thread_num();
+        printf("my pid: %d", pid);
+        i =0;
        for(i=pid; i<size; i+=4){
            numbers[i] = pid;
        }
     }
     double end = omp_get_wtime();
 
-    printf("time: %f", end-start);
-    for(int i=0;i<size;i++){
+    printf("time: %f \n", end-start);
+    int j;
+    for(j=0;j<size;j++){
         printf("%d ", numbers[i]);
     }
     free(numbers);
