@@ -1,9 +1,5 @@
 threads; size; time;
 0; 0; 0;
-threads; size; time;
-0; 0; 0;
-threads; size; time;
-0; 0; 0;
 1; 1000; 0.000030;
 2; 1000; 0.000074;
 3; 1000; 0.000105;
