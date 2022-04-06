@@ -5,7 +5,7 @@
 
 int main(int argc, char ** argv){
 
-    long int size= 243138329; // max size
+    int size = 243138329; // max size
     if(argc>=2){
         size = atoi(argv[1]);
     }
@@ -16,23 +16,33 @@ int main(int argc, char ** argv){
         return 1;
     }
 
-    long int i;
-    int pid, tim = time(NULL);
+    int i, thr;
+    int tim = time(NULL);
     unsigned int seed;
 
     double start = omp_get_wtime(); 
-    #pragma omp parallel shared(numbers, tim, size) private(i, pid, seed)
+    #pragma omp parallel shared(numbers, tim, size, thr) private(i, seed)
     {
-        pid = omp_get_thread_num();
-        seed = pid + tim;
+        seed = omp_get_thread_num() + tim;
 
-        #pragma omp for
+        #pragma omp for schedule(static)
        for(i=0; i<size; i++){
             numbers[i] = rand_r(&seed);
        }
+
+      thr = omp_get_num_threads();
     }
+     
     double end = omp_get_wtime();
 
-    printf("time: %f \n", end-start);
+    if(argc>2){
+      FILE *fd;
+      fd = fopen(argv[2], "a" );
+
+      fprintf(fd,"%d; %d, %f;\n", thr, size, end-start);
+      fclose(fd);
+    }
     free(numbers);
 }
+
+

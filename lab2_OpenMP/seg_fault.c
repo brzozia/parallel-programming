@@ -1,38 +1,30 @@
+#include <omp.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <omp.h>
-#include <time.h>
+int main(int argc, char** argv){
 
-int main(int argc, char ** argv){
+double time0;
+long SIZE = atoi(argv[1]);
+int* a;
+a = (int*)malloc(190000 * sizeof(int));
+srand(7);
 
-    unsigned long int size=4294967295;
-    if(argc>=2){
-        size = atoi(argv[1]);
-    }
-    int *numbers = NULL;
-    while (numbers == NULL){
-        numbers = malloc(size*sizeof(int));
-        size -= 100;
-    }
-    printf("size: %ld\r\n", size);
-    long long int i;
-    int pid, thr;
-    
-    double start = omp_get_wtime(); // + for + generator
-    #pragma omp parallel shared(numbers, size) private(i, pid, thr)
-    {
-        thr = omp_get_num_threads();
-        pid = omp_get_thread_num();
-        i = pid;
-        for(i; i<size; i+=thr){
-           numbers[i] = pid;
-       }
-    }
-
-    printf("%ld\n", size);
-    double end = omp_get_wtime();
-
-    printf("time: %f \n", end-start);
-    free(numbers);
-
+int* i;
+int j;
+printf("\n");
+for (j = 0; j<9; j++){
+time0 = omp_get_wtime();
+#pragma omp parallel for shared(SIZE, a) private(i) schedule(runtime)
+for (i = a[0]; i<SIZE+a[0]; i++){
+*i = omp_get_thread_num();
 }
+printf("%f,", omp_get_wtime()-time0);
+}
+
+int ilosc_watkow;
+#pragma omp parallel shared(ilosc_watkow, SIZE)
+ilosc_watkow = omp_get_num_threads();
+printf("%d,", ilosc_watkow);
+printf("%ld", SIZE);
+return 0;
+ }
