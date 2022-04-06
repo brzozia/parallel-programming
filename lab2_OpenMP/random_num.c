@@ -5,7 +5,7 @@
 
 int main(int argc, char ** argv){
 
-    int size=1600000000000;
+    int size=1600000000;
     // if(argc>=2){
     //     size = 10;
     // }
