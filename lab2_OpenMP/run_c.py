@@ -9,8 +9,9 @@ f.close()
 
 
 compile_c = "gcc -Wall ./rly_random_num_for.c -o rand -fopenmp"
-schedule = ['static', 'static,4', 'dynamic', 'dynamic,4', 'dynamic,50', 'guided,4', 'guided']
-files = ['./results_'+str(x.replace(',', '_'))+".txt" for x in schedule]
+# schedule = ['static', 'static,4', 'dynamic', 'dynamic,4', 'dynamic,50', 'guided,4', 'guided']
+schedule = [ 'guided,4']
+files = ['./results_'+str(x.replace(',', '_'))+"_2.txt" for x in schedule]
 # run_c = ["export OMP_NUM_THREADS="+str(x)+ " ./rand" for x in range(1,5)]
 
 
