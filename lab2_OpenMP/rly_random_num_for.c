@@ -39,7 +39,7 @@ int main(int argc, char ** argv){
       FILE *fd;
       fd = fopen(argv[2], "a" );
 
-      fprintf(fd,"%d; %d, %f;\n", thr, size, end-start);
+      fprintf(fd,"%d; %d; %f;\n", thr, size, end-start);
       fclose(fd);
     }
     free(numbers);
