@@ -118,7 +118,7 @@ def time(fig):
 
     fig.add_trace(go.Scatter(
         x=x1,
-        y=y1,
+        y=y1std,
         mode='markers',
         name="odchylenie standardowe 4*10^6",
         marker_symbol='diamond',
@@ -130,7 +130,7 @@ def time(fig):
     ))
     fig.add_trace(go.Scatter(
         x=x1,
-        y=y2,
+        y=y2std,
         mode='markers',
         name="odchylenie standardowe 3*10^8",
         marker_symbol='diamond',
@@ -142,7 +142,7 @@ def time(fig):
     ))
     fig.add_trace(go.Scatter(
         x=x1,
-        y=y3,
+        y=y3std,
         mode='markers',
         name="odchylenie standardowe 5*10^9",
         marker_symbol='diamond',
@@ -229,35 +229,10 @@ def sekw(fig, x1, yz1, yz2, yz3):
     y1 = []
     y2 = []
     y3 = []
-    for i in range(1, 13,1):
+    for i in range(1, 12,1):
         y1.append(((1/yz1[i]) - (1/(i+1)) ) / (1 - (1/(i+1))))
         y2.append(((1/yz2[i]) - (1/(i+1)) ) / (1 - (1/(i+1))))
         y3.append(((1/yz3[i]) - (1/(i+1)) ) / (1 - (1/(i+1))))
-
-
-
-    # tp1 = -1
-    # tp2 = -1
-    # tp3 = -1
-    # for key,d in all_df.items():
-    #     x1.append(key)
-
-    #     t1 = [x['end'] - x['start'] for i, x in d.iterrows() if x['all_points']==4000000]
-    #     t2 = [x['end'] - x['start'] for i, x in d.iterrows() if x['all_points']==300000000]
-    #     t3 = [x['end'] - x['start'] for i, x in d.iterrows() if x['all_points']==5000000000]
-
-
-        
-
-    #     if(tp1==-1):
-    #         tp1 = sum(t1)/len(t1)
-    #         tp2 = sum(t2)/len(t2)
-    #         tp3 = sum(t3)/len(t3)
-    #     else:
-    #         y1.append(tp1/(sum(t1)/len(t1)))
-    #         y2.append(tp2/(sum(t2)/len(t2)))
-    #         y3.append(tp3/(sum(t3)/len(t3))) 
-
     
     fig.add_trace(go.Scatter(
         x=x1,
@@ -385,9 +360,10 @@ fig3 = go.Figure()
 fig4 = go.Figure()
 
 x1, y1, y2, y3 = time(fig)
-x1, y1, y2, y3 = speedup(fig2, x1, y1, y2, y3)
-efectivity(fig3, x1, y1, y2, y3)
-sekw(fig4, x1, y1, y2, y3)
+x11, y11, y21, y31 = speedup(fig2, x1, y1, y2, y3)
+sekw(fig4, x11, y11, y21, y31)
+efectivity(fig3, x11, y11, y21, y31)
+
 
 fig.show()
 fig2.show()
