@@ -32,7 +32,7 @@ void generate_numbers(){
 
 // args: SIZE, MAX_VALUE, PREFFERED_ELEMENTS_IN_BUCKET, NUMBER_OF_THREADS
 int main(int argc, char** argv){
-    double time_generate, time_separate, time_sort, time_concat, time_all;
+    float time_generate, time_separate, time_sort, time_concat, time_all;
     time_all = omp_get_wtime();
     
     int threads=1, size = 10;

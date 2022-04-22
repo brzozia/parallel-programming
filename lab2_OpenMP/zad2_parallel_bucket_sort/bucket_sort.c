@@ -19,16 +19,16 @@ void print_bucket(struct node * bucket){
 
 void generate_numbers(int size, int *array, int max){
     int i;
-    #pragma omp parallel shared(size, max, array) private(i)
-    {
+    // #pragma omp parallel shared(size, max, array) private(i)
+    // {
         unsigned int seed = omp_get_thread_num()+(unsigned int)time(NULL);
         
         //Random numbers generating
-        #pragma omp for schedule(runtime)
+        // #pragma omp for schedule(runtime)
         for (i = 0; i<size; i++){
             array[i] = rand_r(&seed)%max;
         }
-    }
+    // }
 }
 
 void separate_numbers(int size, int *array, int range, int min, int buckets, struct node *buckets_array){
@@ -91,9 +91,9 @@ void concat_numbers(int buckets, struct node * buckets_array, int *array){
     }
 }
 
-// args: SIZE, MAX_VALUE, PREFFERED_ELEMENTS_IN_BUCKET
+// args: SIZE, MAX_VALUE, PREFFERED_ELEMENTS_IN_BUCKET, RESULTS_FILENAME
 int main(int argc, char** argv){
-    double time_generate, time_separate, time_sort, time_concat, time_all;
+    double time_generate, time_separate, time_sort, time_concat, time_all, time_allocate, time_deallocate;
     time_all = omp_get_wtime();
     
     int size = 10;
@@ -115,20 +115,22 @@ int main(int argc, char** argv){
     generate_numbers(size, array, max);
     time_generate = omp_get_wtime() - time_generate;
 
-    int min = max;
-    for (i = 0; i<size; i++){
-        if(array[i]<min){
-            min = array[i];
-        }
-        printf("%d ",array[i]);
-    }
+    // int min = max;
+    // for (i = 0; i<size; i++){
+    //     if(array[i]<min){
+    //         min = array[i];
+    //     }
+    //     printf("%d ",array[i]);
+    // }
+    int min = 0;
 
-    int buckets = ceil((double)size/mean_elements_in_bucket);
-    int range = ceil((double)(max-min)/buckets);
+    int buckets = ceil((float)size/mean_elements_in_bucket);
+    int range = ceil((float)(max-min)/buckets);
     printf("\n Range of numbers in array %d:%d \nElements to sort: %d \n", min,max,size);
     printf("Number of buckets: %d \nWhole range of numbers is divided into parts of about: %d elements\n", buckets,range);
 
     // Array containing all buckets
+    time_allocate = omp_get_wtime();
     struct node* buckets_array = malloc(buckets*sizeof(struct node));
     if(buckets_array == NULL){
         printf("Error while allocating memory for buckets array");
@@ -139,6 +141,8 @@ int main(int argc, char** argv){
         buckets_array[i].data = -1;
         buckets_array[i].next = NULL;
     }
+    time_allocate = omp_get_wtime() - time_allocate;
+
 
     // Put generated numbers in buckets
     time_separate = omp_get_wtime();
@@ -156,18 +160,32 @@ int main(int argc, char** argv){
     time_concat = omp_get_wtime();
     concat_numbers(buckets, buckets_array, array);
     time_concat = omp_get_wtime() - time_concat;
+    
+     // Print results
+    // for(i=0;i<size;i++){
+    //     printf("%d ", array[i]);
+    // }
 
-
-    time_all = omp_get_wtime()-time_all;
-    // Print results
-    for(i=0;i<size;i++){
-        printf("%d ", array[i]);
-    }
-    printf("Time generate: %f\n Time separate: %f\n Time sort: %f\n Time concat buckets: %f\n Time all: %f", time_generate, time_separate, time_sort, time_concat, time_all);
-
-    // Free memory
+    time_deallocate = omp_get_wtime();
     free(buckets_array);
     free(array);
+    time_deallocate = omp_get_wtime() - time_deallocate;
+
+   
+    time_all = omp_get_wtime()-time_all;
+    
+    printf("Time generate: %lf\n Time allocate: %lf\n Time separate: %lf\n Time sort: %lf\n Time concat buckets: %lf\n Time deallocate %lf\n Time all: %lf", time_generate, time_allocate, time_separate, time_sort, time_concat, time_deallocate, time_all);
+
+    // Write to file
+    if(argc>=5){
+        FILE *fd;
+        fd = fopen(argv[4], "a" );
+        fprintf(fd,"%d;%d;%d;%d;%lf;%lf;%lf;%lf;%lf;%lf;%lf;\n", min, max, size, buckets, time_generate, time_allocate, time_separate, time_sort, time_concat, time_deallocate, time_all);
+        fclose(fd);
+    }
+
+    // Free memory
+    
 
     return 0;
 }
