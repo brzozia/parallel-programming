@@ -35,7 +35,7 @@ void generate_numbers(int *size, int *my_pid, int *array, int *max){
 }
 
 
-void separate_numbers(int *my_start_range_id, int *my_end_range_id, int *array, int *range, int *min, int *buckets, struct node **threads_buckets, int *my_pid, char *error, int *size){
+void separate_numbers(int *my_start_range_id, int *my_end_range_id, int *array, double *range, int *min, int *buckets, struct node **threads_buckets, int *my_pid, char *error, int *size){
     int i;
     #pragma omp for schedule(static)
     for (i = 0; i<(*size); i++){
@@ -84,7 +84,7 @@ void sort_buckets(int *my_pid, int *my_bucket_start_id, int *my_bucket_end_id, s
     int i;
     for(i=(*my_bucket_start_id); i<=(*my_bucket_end_id); i++){
         // printf("sort test\n");
-        // print_bucket(threads_buckets[my_pid][i].next);
+        // print_bucket(threads_buckets[(*my_pid)][i].next);
         struct node *ptr = threads_buckets[(*my_pid)][i].next;
         
         while(ptr != NULL && ptr->next != NULL){
@@ -107,8 +107,10 @@ void sort_buckets(int *my_pid, int *my_bucket_start_id, int *my_bucket_end_id, s
                 ptr = ptr -> next;
             }
         }
-        // print_bucket(threads_buckets[my_pid][i].next);
+        // print_bucket(threads_buckets[(*my_pid)][i].next);
+        
     }
+    // printf("sort done %d ", *my_pid);
 }
 
 void concat_numbers(int *my_pid, struct elements_count * elements, int *my_elements, int *my_bucket_start_id, int *my_bucket_end_id, int *array, struct node ** threads_buckets){
@@ -165,10 +167,10 @@ int main(int argc, char** argv){
     int min=0, i,j;
     int* array = malloc(size * sizeof(int));
     int buckets = ceil((float)size/mean_elements_in_bucket);
-    int range = ceil((float)(max-min)/buckets);
+    double range = (double)(max-min)/buckets;
 
     // printf("\nRange of numbers in array %d:%d \nElements to sort: %d \n", min,max,size);
-    // printf("Number of buckets: %d \nWhole range of numbers is divided into parts of about: %d elements\n", buckets,range);
+    // printf("Number of buckets: %d \nWhole range of numbers is divided into parts of about: %lf elements\n", buckets,range);
 
 
     // Array containing all buckets
@@ -188,11 +190,11 @@ int main(int argc, char** argv){
     }
 
     // double **times = malloc(threads * sizeof(double*)); //time_allocate, time_generate, time_separate, time_buckets_merge, time_sep_merge, time_sort, time_concat;
-    double *times = malloc(threads * sizeof(double));
     int times_no = 7;
+    double *times = malloc(times_no * sizeof(double));
     time_allocate_sync = omp_get_wtime() - time_allocate_sync;
 
-    #pragma omp parallel shared(error, size, min, max, array, range, threads, threads_buckets, buckets, elements, times_no, times) private(i,j,time_tmp, time_c)
+    #pragma omp parallel shared(error, size, min, max, array, range, threads, threads_buckets, buckets, elements, times_no, times) private(time_tmp, time_c)
     {
         int my_elements, my_pid, my_start_range_id, my_end_range_id, my_bucket_start_id, my_bucket_end_id;
         my_pid = omp_get_thread_num();
@@ -222,10 +224,11 @@ int main(int argc, char** argv){
             error = 'e';
             exit(1);
         }
-        for(i=0; i<buckets; i++){
+        int k;
+        for(k=0; k<buckets; k++){
             //guardian
-            threads_buckets[my_pid][i].data = -1;
-            threads_buckets[my_pid][i].next = NULL;
+            threads_buckets[my_pid][k].data = -1;
+            threads_buckets[my_pid][k].next = NULL;
         }
         #pragma omp barrier
         time_c = omp_get_wtime() - time_c;
@@ -311,6 +314,7 @@ int main(int argc, char** argv){
    
 
     // Free memory
+    
     time_deallocate = omp_get_wtime();
     for(j=0;j<threads;j++){
         free(threads_buckets[j]);
@@ -324,18 +328,18 @@ int main(int argc, char** argv){
         if(array[i-1] > array[i]){
             error = 's';
         }
-        printf("%d ", array[i]);
+        // printf("%d ", array[i]);
     }
    free(array);
 
     if(argc>=6){
         FILE *fd;
         fd = fopen(argv[5], "a" );
-        fprintf(fd,"%d;%d;%d;%d;%d;%lf;%lf;%lf;%c;\n", min, max, size, buckets, threads, time_allocate_sync,  time_deallocate, time_all, error);
+        fprintf(fd,"%d;%d;%d;%d;%d;%lf;%d;%lf;%lf;%lf;%c;", min, max, size, buckets, mean_elements_in_bucket, range, threads, time_allocate_sync,  time_deallocate, time_all, error);
         // for(i=0;i<threads;i++){
         for(j=0;j<times_no;j++){
             fprintf(fd,"%lf;", times[j]);
-            // fprintf(fd,"%lf;", times[i][j]); ////time_allocate, time_generate, time_separate, time_buckets_merge, time_sort, time_concat;
+            // fprintf(fd,"%lf;", times[i][j]); ////time_allocate, time_generate, time_separate, time_buckets_merge, time_separate+merge, time_sort, time_concat;
         }
         fprintf(fd,"\n");
         // }
