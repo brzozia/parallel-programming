@@ -11,3 +11,5 @@ proces.wait()
 for size in sizes:
     proces = subprocess.Popen(["bash", "-c", "export OMP_NUM_THREADS=4; ./bucket" + " " + str(size) + " 0 10 1 check_paral_mem.txt"  + ])
     proces.wait()
+
+
