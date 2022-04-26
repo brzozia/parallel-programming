@@ -9,9 +9,9 @@ typedef struct node{
 
 
 int main(int argc, char **argv){
-    unsigned long long int size = 1000000000;
+    long long int size = 1000000000;
     if(argc>=2){
-        size = atoi(argv[1]);
+        size = atoll(argv[1]);
     }
 
     int* array  = malloc(size * sizeof(int));

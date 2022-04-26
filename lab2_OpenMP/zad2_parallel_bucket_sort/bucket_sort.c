@@ -31,7 +31,7 @@ void generate_numbers(int size, int *array, int max){
     // }
 }
 
-void separate_numbers(int size, int *array, int range, int min, int buckets, struct node *buckets_array){
+void separate_numbers(int size, int *array, int range, int min, int buckets, struct node *buckets_array, char *error){
     int i;
     for(i=0; i<size; i++){
         int bucket_id = (array[i]-min)/range;
@@ -40,6 +40,10 @@ void separate_numbers(int size, int *array, int range, int min, int buckets, str
         }
         
         struct node *head = malloc(sizeof(struct node));
+        if(head==NULL){
+            *error = 'e';
+            exit(1);
+        }
         head->data = array[i];
         head->next = buckets_array[bucket_id].next;
         buckets_array[bucket_id].next = head;
@@ -94,11 +98,12 @@ void concat_numbers(int buckets, struct node * buckets_array, int *array){
 // args: SIZE, MAX_VALUE, PREFFERED_ELEMENTS_IN_BUCKET, RESULTS_FILENAME
 int main(int argc, char** argv){
     double time_generate, time_separate, time_sort, time_concat, time_all, time_allocate, time_deallocate;
+    char error = 'o';
     time_all = omp_get_wtime();
     
-    int size = 10;
+    int size = 1100000000;;
     int max = RAND_MAX;
-    int mean_elements_in_bucket = 3;
+    int mean_elements_in_bucket = 10;
     if(argc>=2){
         size = atoi(argv[1]);
     }
@@ -109,6 +114,11 @@ int main(int argc, char** argv){
         mean_elements_in_bucket = atoi(argv[3]);
     }
     int* array  = malloc(size * sizeof(int));
+    if(array == NULL){
+        printf("Error while allocating memory for numbers array");
+        error = 'e';
+        exit(1);
+    }
     int i;
 
     time_generate = omp_get_wtime();
@@ -134,6 +144,8 @@ int main(int argc, char** argv){
     struct node* buckets_array = malloc(buckets*sizeof(struct node));
     if(buckets_array == NULL){
         printf("Error while allocating memory for buckets array");
+        error = 'e';
+         exit(1);
     }
 
     // Allocate buckets with guardian
@@ -146,7 +158,7 @@ int main(int argc, char** argv){
 
     // Put generated numbers in buckets
     time_separate = omp_get_wtime();
-    separate_numbers(size, array, range, min, buckets, buckets_array);
+    separate_numbers(size, array, range, min, buckets, buckets_array, &error);
     time_separate = omp_get_wtime() - time_separate;
 
 
@@ -174,13 +186,13 @@ int main(int argc, char** argv){
    
     time_all = omp_get_wtime()-time_all;
     
-    printf("Time generate: %lf\n Time allocate: %lf\n Time separate: %lf\n Time sort: %lf\n Time concat buckets: %lf\n Time deallocate %lf\n Time all: %lf", time_generate, time_allocate, time_separate, time_sort, time_concat, time_deallocate, time_all);
+    printf("Time generate: %lf\n Time allocate: %lf\n Time separate: %lf\n Time sort: %lf\n Time concat buckets: %lf\n Time deallocate %lf\n Time all: %lf\n Err: %c\n", time_generate, time_allocate, time_separate, time_sort, time_concat, time_deallocate, time_all, error);
 
     // Write to file
     if(argc>=5){
         FILE *fd;
         fd = fopen(argv[4], "a" );
-        fprintf(fd,"%d;%d;%d;%d;%lf;%lf;%lf;%lf;%lf;%lf;%lf;\n", min, max, size, buckets, time_generate, time_allocate, time_separate, time_sort, time_concat, time_deallocate, time_all);
+        fprintf(fd,"%d;%d;%d;%d;%lf;%lf;%lf;%lf;%lf;%lf;%lf;%c;\n", min, max, size, buckets, time_generate, time_allocate, time_separate, time_sort, time_concat, time_deallocate, time_all, error);
         fclose(fd);
     }
 
