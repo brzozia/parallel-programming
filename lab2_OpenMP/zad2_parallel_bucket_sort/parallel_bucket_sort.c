@@ -24,7 +24,7 @@ void print_bucket(struct node * bucket){
     printf("\n");
 }
 
-void generate_numbers(int *size, int *my_pid, int *array, int *max){
+void generate_numbers(unsigned long long *size, int *my_pid, int *array, int *max){
     unsigned int seed = *my_pid+(unsigned int)time(NULL);
     int i;
     //Random numbers generating
@@ -35,7 +35,7 @@ void generate_numbers(int *size, int *my_pid, int *array, int *max){
 }
 
 
-void separate_numbers(int *my_start_range_id, int *my_end_range_id, int *array, double *range, int *min, int *buckets, struct node **threads_buckets, int *my_pid, char *error, int *size){
+void separate_numbers(int *my_start_range_id, int *my_end_range_id, int *array, double *range, int *min, int *buckets, struct node **threads_buckets, int *my_pid, char *error, unsigned long long *size){
     int i;
     #pragma omp for schedule(static)
     for (i = 0; i<(*size); i++){
@@ -147,12 +147,13 @@ int main(int argc, char** argv){
     char error = 'o';
     time_all = omp_get_wtime();
     
-    int threads=1, size = 1100000000;
+    int threads=1;
+    unsigned long long size = 1100000000;
     int max = RAND_MAX;
     int mean_elements_in_bucket = 10;
     // Parsing arguments
     if(argc>=2){
-        size = atoi(argv[1]);
+        size = atoll(argv[1]);
     }
     if(argc>=3 && strcmp(argv[2], "0")){
         max = atoi(argv[2]);
@@ -166,6 +167,11 @@ int main(int argc, char** argv){
 
     int min=0, i,j;
     int* array = malloc(size * sizeof(int));
+    if(array == NULL){
+        printf("Error while allocating memory for numbers array %lld", size);
+        error = 'e';
+        exit(1);
+    }
     int buckets = ceil((float)size/mean_elements_in_bucket);
     double range = (double)(max-min)/buckets;
 
@@ -177,7 +183,7 @@ int main(int argc, char** argv){
     time_allocate_sync = omp_get_wtime();
     struct node ** threads_buckets = malloc(threads * sizeof(struct node*));
     if(threads_buckets == NULL){
-        printf("Error while allocating memory for buckets array");
+        printf("Error while allocating memory for buckets array %lld", size);
         error = 'e';
         exit(1);
     }
@@ -220,7 +226,7 @@ int main(int argc, char** argv){
         time_c = omp_get_wtime();
         threads_buckets[my_pid] = malloc(buckets*sizeof(struct node));
         if(threads_buckets[my_pid] == NULL){
-            printf("Error while allocating memory for buckets array");
+            printf("Error while allocating memory for buckets array %lld", size);
             error = 'e';
             exit(1);
         }
@@ -335,7 +341,7 @@ int main(int argc, char** argv){
     if(argc>=6){
         FILE *fd;
         fd = fopen(argv[5], "a" );
-        fprintf(fd,"%d;%d;%d;%d;%d;%lf;%d;%lf;%lf;%lf;%c;", min, max, size, buckets, mean_elements_in_bucket, range, threads, time_allocate_sync,  time_deallocate, time_all, error);
+        fprintf(fd,"%d;%d;%lld;%d;%d;%lf;%d;%lf;%lf;%lf;%c;", min, max, size, buckets, mean_elements_in_bucket, range, threads, time_allocate_sync,  time_deallocate, time_all, error);
         // for(i=0;i<threads;i++){
         for(j=0;j<times_no;j++){
             fprintf(fd,"%lf;", times[j]);
