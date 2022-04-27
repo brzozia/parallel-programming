@@ -24,24 +24,24 @@ void print_bucket(struct node * bucket){
     printf("\n");
 }
 
-void generate_numbers(unsigned long long *size, int *my_pid, int *array, int *max){
+void generate_numbers(unsigned long long size, int *my_pid, int *array, int max){
     unsigned int seed = *my_pid+(unsigned int)time(NULL);
     int i;
     //Random numbers generating
     #pragma omp for schedule(static)
-    for (i = 0; i<(*size); i++){
-        array[i] = rand_r(&seed)%(*max);
+    for (i = 0; i<(size); i++){
+        array[i] = rand_r(&seed)%(max);
     }
 }
 
 
-void separate_numbers(int *my_start_range_id, int *my_end_range_id, int *array, double *range, int *min, int *buckets, struct node **threads_buckets, int *my_pid, char *error, unsigned long long *size){
+void separate_numbers(int *my_start_range_id, int *my_end_range_id, int *array, double range, int min, int buckets, struct node **threads_buckets, int *my_pid, char *error, unsigned long long size){
     int i;
     #pragma omp for schedule(static)
-    for (i = 0; i<(*size); i++){
+    for (i = 0; i<(size); i++){
     // for(i=my_start_range_id; i<=my_end_range_id; i++){
-        int bucket_id = (array[i]-(*min))/(*range);
-        if(bucket_id >= (*buckets)){
+        int bucket_id = (array[i]-(min))/(range);
+        if(bucket_id >= (buckets)){
             bucket_id--;
         }
         
@@ -58,7 +58,7 @@ void separate_numbers(int *my_start_range_id, int *my_end_range_id, int *array, 
     }
 }
 
-void merge_elements(int *threads, int *my_bucket_start_id, int *my_bucket_end_id, int *my_pid, struct node ** threads_buckets, int *my_elements){
+void merge_elements(int threads, int *my_bucket_start_id, int *my_bucket_end_id, int *my_pid, struct node ** threads_buckets, int *my_elements){
     int i,j;
     for(i=(*my_bucket_start_id); i<=(*my_bucket_end_id); i++){
         struct node * ptr = &threads_buckets[(*my_pid)][i];
@@ -66,7 +66,7 @@ void merge_elements(int *threads, int *my_bucket_start_id, int *my_bucket_end_id
             (*my_elements)++;
             ptr = ptr->next;
         }
-        for(j=0;j<(*threads);j++){
+        for(j=0;j<(threads);j++){
             if(j != (*my_pid)){
                 ptr -> next = threads_buckets[j][i].next;
                 while(ptr->next != NULL){
@@ -75,7 +75,7 @@ void merge_elements(int *threads, int *my_bucket_start_id, int *my_bucket_end_id
                 }
             }
         }
-        
+        printf("thread: %d, bucket id: %d, end id %d, my elements: %d\n", *my_pid, i, *my_bucket_end_id, *my_elements);
     }
     // printf("thread: %d, my start bucket id: %d, end id %d, my elements: %d\n", *my_pid, *my_bucket_start_id, *my_bucket_end_id, *my_elements);
 }
@@ -200,23 +200,24 @@ int main(int argc, char** argv){
     double *times = malloc(times_no * sizeof(double));
     time_allocate_sync = omp_get_wtime() - time_allocate_sync;
 
-    #pragma omp parallel shared(error, size, min, max, array, range, threads, threads_buckets, buckets, elements, times_no, times) private(time_tmp, time_c)
+    #pragma omp parallel shared(error, size, min, max, range, threads,  buckets, array, threads_buckets, elements, times_no, times) private(time_tmp, time_c)
     {
         int my_elements, my_pid, my_start_range_id, my_end_range_id, my_bucket_start_id, my_bucket_end_id;
+        int m_buckets = buckets;
         my_pid = omp_get_thread_num();
         elements[my_pid].count = -1; // init locks
         omp_init_lock(&elements[my_pid].mut);
         omp_set_lock(&elements[my_pid].mut);
 
         my_start_range_id = my_pid * size / threads;
-        my_bucket_start_id = my_pid * buckets/threads;
+        my_bucket_start_id = my_pid * m_buckets/threads;
         if(my_pid == threads - 1){
             my_end_range_id = size - 1;
-            my_bucket_end_id = buckets - 1;
+            my_bucket_end_id = m_buckets - 1;
         }
         else{
             my_end_range_id = ((my_pid+1) * size / threads) - 1;
-            my_bucket_end_id = ((my_pid+1) * buckets / threads) - 1;
+            my_bucket_end_id = ((my_pid+1) * m_buckets / threads) - 1;
         }
 
 
@@ -224,14 +225,15 @@ int main(int argc, char** argv){
         // Each thread allocates buckets for itself
         #pragma omp barrier
         time_c = omp_get_wtime();
-        threads_buckets[my_pid] = malloc(buckets*sizeof(struct node));
+        threads_buckets[my_pid] = malloc(m_buckets*sizeof(struct node));
         if(threads_buckets[my_pid] == NULL){
             printf("Error while allocating memory for buckets array %lld", size);
             error = 'e';
             exit(1);
         }
         int k;
-        for(k=0; k<buckets; k++){
+        
+        for(k=0; k<m_buckets; k++){
             //guardian
             threads_buckets[my_pid][k].data = -1;
             threads_buckets[my_pid][k].next = NULL;
@@ -246,7 +248,7 @@ int main(int argc, char** argv){
         // Random numbers generating
         #pragma omp barrier // barrier before counting time
         time_c = omp_get_wtime(); // next barrier inside function (before and after for pragma)
-        generate_numbers(&size, &my_pid, array, &max);
+        generate_numbers(size, &my_pid, array, max);
         #pragma omp barrier // just in case of anything
         time_c = omp_get_wtime() - time_c;
         // times[my_pid][1] = time_c;
@@ -272,7 +274,7 @@ int main(int argc, char** argv){
         // Put generated numbers in buckets  
         #pragma omp barrier 
         time_c = omp_get_wtime();
-        separate_numbers( &my_start_range_id, &my_end_range_id, array, &range, &min, &buckets, threads_buckets, &my_pid, &error, &size); // barrier inside again
+        separate_numbers( &my_start_range_id, &my_end_range_id, array, range, min, m_buckets, threads_buckets, &my_pid, &error, size); // barrier inside again
         #pragma omp barrier
         // times[my_pid][2] = time_c;
         if(my_pid==0){
@@ -284,7 +286,7 @@ int main(int argc, char** argv){
         #pragma omp barrier
         time_tmp = omp_get_wtime();
         my_elements = 0;
-        merge_elements(&threads, &my_bucket_start_id, &my_bucket_end_id, &my_pid, threads_buckets, &my_elements);
+        merge_elements(threads, &my_bucket_start_id, &my_bucket_end_id, &my_pid, threads_buckets, &my_elements);
         #pragma omp barrier
         // times[my_pid][3] = time_c;
         if(my_pid==0){
@@ -335,7 +337,7 @@ int main(int argc, char** argv){
         if(array[i-1] > array[i]){
             error = 's';
         }
-        // printf("%d ", array[i]);
+        printf("%d ", array[i]);
     }
    free(array);
 
