@@ -2,7 +2,7 @@ import subprocess
 
 size = 40000000
 
-result_file = "./results_b9sh.txt"
+result_file = "./results_b10sh.txt"
 f = open(result_file, "a")
 f.write("min;max;size;buckets;mean_elements_in_bucket;threads;time_allocate_sync;time_deallocate;time_all;error;\n0;0;0;0;0;0;0;0;0;0;\n")
 f.close()
@@ -24,7 +24,7 @@ proces.wait()
     # f.close()
     # for size in sizes:
 for x in range(0,5): 
-    for bucket_size in range(1,100):
+    for bucket_size in range(1,200,2):
         proces = subprocess.Popen(["bash", "-c", "export OMP_NUM_THREADS=1; ./bucket " + str(size) + " 100000 "+ str(bucket_size)+ " 1 " + result_file])
         proces.wait()
         print(proces.stdout)
