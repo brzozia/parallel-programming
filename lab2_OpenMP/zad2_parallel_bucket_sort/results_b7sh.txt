@@ -1,7 +1,5 @@
-min;max;size;buckets;mean_elements_in_bucket;threads;time_allocate_sync;time_deallocate;time_all;error;
-0;0;0;0;0;0;0;0;0;0;
-min;max;size;buckets;mean_elements_in_bucket;threads;time_allocate_sync;time_deallocate;time_all;error;
-0;0;0;0;0;0;0;0;0;0;
+min;max;size;buckets;mean_elements_in_bucket;threads;time_allocate_sync;time_deallocate;time_all;error;0;0;0;0;0;0;0;0;
+0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;
 0;100000;10000000;10000000;1;0.010000;1;0.000000;0.000410;4.456955;o;0.064737;0.073208;0.886198;1.184693;2.070892;1.090467;1.157198;
 0;100000;10000000;10000000;1;0.010000;1;0.000000;0.000596;4.498369;o;0.065049;0.074043;0.894956;1.196380;2.091337;1.101040;1.166264;
 0;100000;10000000;5000000;2;0.020000;1;0.000000;0.000413;4.261223;o;0.035745;0.074333;0.801402;1.083690;1.885093;1.133699;1.131897;

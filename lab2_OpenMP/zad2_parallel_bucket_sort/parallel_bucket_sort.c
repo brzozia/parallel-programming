@@ -330,6 +330,7 @@ int main(int argc, char** argv){
     time_deallocate = omp_get_wtime() - time_deallocate;
     time_all = omp_get_wtime()-time_all;
 
+    
     for(i=1;i<size;i++){
         if(array[i-1] > array[i]){
             error = 's';
