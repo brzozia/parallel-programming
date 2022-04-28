@@ -143,7 +143,7 @@ void concat_numbers(int *my_pid, struct elements_count * elements, int *my_eleme
 
 // args: SIZE, MAX_VALUE, PREFFERED_ELEMENTS_IN_BUCKET, NUMBER_OF_THREADS
 int main(int argc, char** argv){
-    double time_all, time_allocate_sync, time_c, time_deallocate, time_tmp;
+    double time_all, time_allocate_sync, time_c, time_deallocate, time_tmp, time_paral;
     char error = 'o';
     time_all = omp_get_wtime();
     
@@ -199,7 +199,8 @@ int main(int argc, char** argv){
     int times_no = 7;
     double *times = malloc(times_no * sizeof(double));
     time_allocate_sync = omp_get_wtime() - time_allocate_sync;
-
+    
+    time_paral = omp_get_wtime();
     #pragma omp parallel shared(error, size, min, max, range, threads,  buckets, array, threads_buckets, elements, times_no, times) private(time_tmp, time_c)
     {
         int my_elements, my_pid, my_start_range_id, my_end_range_id, my_bucket_start_id, my_bucket_end_id;
@@ -317,6 +318,7 @@ int main(int argc, char** argv){
             times[6] = time_c;
         }
     }
+	time_paral = omp_get_wtime() - time_paral;
     
     // printf("Time generate: %f\n Time separate: %f\n Time sort: %f\n Time concat buckets: %f\n Time all: %f", time_generate, time_separate, time_sort, time_concat, time_all);
    
@@ -350,7 +352,7 @@ int main(int argc, char** argv){
             fprintf(fd,"%lf;", times[j]);
             // fprintf(fd,"%lf;", times[i][j]); ////time_allocate, time_generate, time_separate, time_buckets_merge, time_separate+merge, time_sort, time_concat;
         }
-        fprintf(fd,"\n");
+        fprintf(fd,"%lf;\n",time_paral);
         // }
         fclose(fd);
     }

@@ -2,7 +2,7 @@ import subprocess
 
 size = 50000000
 
-result_file = "./results_b50max.txt"
+result_file = "./results_b50maxtes.txt"
 f = open(result_file, "a")
 f.write("min;max;size;buckets;mean_elements_in_bucket;threads;time_allocate_sync;time_deallocate;time_all;error;\n0;0;0;0;0;0;0;0;0;0;\n")
 f.close()

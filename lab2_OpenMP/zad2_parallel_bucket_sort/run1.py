@@ -1,6 +1,6 @@
 import subprocess
 
-size = 40000000
+size = 50000000
 bucket_size = 20
 
 
