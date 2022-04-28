@@ -5,4 +5,4 @@
 #SBATCH --partition=plgrid-short
 #SBATCH --account=plgmpr22
 
-python run_bucket_no1.py
+python run_bucket_no.py
