@@ -3,7 +3,8 @@ import subprocess
 size = 40000000
 bucket_size = 20
 
-result_file = "./results_run21.txt"
+
+result_file = "./results_run20.txt"
 f = open(result_file, "a")
 f.write("min;max;size;buckets;mean_elements_in_bucket;threads;time_allocate_sync;time_deallocate;time_all;error;0;0;0;0;0;0;0;0;\n")
 f.close()

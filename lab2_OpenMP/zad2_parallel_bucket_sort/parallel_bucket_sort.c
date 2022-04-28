@@ -75,7 +75,7 @@ void merge_elements(int threads, int *my_bucket_start_id, int *my_bucket_end_id,
                 }
             }
         }
-        printf("thread: %d, bucket id: %d, end id %d, my elements: %d\n", *my_pid, i, *my_bucket_end_id, *my_elements);
+       // printf("thread: %d, bucket id: %d, end id %d, my elements: %d\n", *my_pid, i, *my_bucket_end_id, *my_elements);
     }
     // printf("thread: %d, my start bucket id: %d, end id %d, my elements: %d\n", *my_pid, *my_bucket_start_id, *my_bucket_end_id, *my_elements);
 }
@@ -337,7 +337,7 @@ int main(int argc, char** argv){
         if(array[i-1] > array[i]){
             error = 's';
         }
-        printf("%d ", array[i]);
+        //printf("%d ", array[i]);
     }
    free(array);
 
