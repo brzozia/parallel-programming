@@ -1,8 +1,8 @@
 import subprocess
 
-size = 10000000
+size = 1000000
 
-result_file = "./res_buck_1_7.txt"
+result_file = "./res_buck_1_6.txt"
 f = open(result_file, "a")
 f.write("min;max;size;buckets;mean_elements_in_bucket;threads;time_allocate_sync;time_deallocate;time_all;error;\n0;0;0;0;0;0;0;0;0;0;\n")
 f.close()
