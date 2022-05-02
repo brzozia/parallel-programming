@@ -5,6 +5,6 @@
 #SBATCH --partition=plgrid-short
 #SBATCH --account=plgmpr22
 
-python run.py
+python run1.py
 
 

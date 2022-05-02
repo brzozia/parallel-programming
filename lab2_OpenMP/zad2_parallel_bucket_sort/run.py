@@ -1,11 +1,11 @@
 import subprocess
 
-size = 40000000
+size = 10000000
 bucket_size = 1
 
-result_file = "./results_run401.txt"
+result_file = "./res_t_1_7_1.txt"
 f = open(result_file, "a")
-f.write("min;max;size;buckets;mean_elements_in_bucket;threads;time_allocate_sync;time_deallocate;time_all;error;0;0;0;0;0;0;0;0;\n")
+f.write("min;max;size;buckets;mean_elements_in_bucket;threads;time_allocate_sync;time_deallocate;time_all;error;0;0;0;0;0;0;0;0;0;\n")
 f.close()
 
 
